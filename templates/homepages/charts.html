@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section>
+    <h1>Charts</h1>
+    <section style="padding: 10px;">
+        {% for result in results %}
+        <div class="song">
+            <div style="display: grid; place-items: center; padding: 10px;">
+                <h5> {{ forloop.counter }} </h5>
+            </div>
+
+            <img style="width: 40px; height: 40px;" src="{{ result.album.images.0.url }}" alt="">
+            <div style="display: grid; grid-template-rows: 1fr 1fr; padding: 0 0 0 12px; min-width: 200px; max-width: 200px;">
+                <h5> {{ result.name }}</h5>
+                <h5 style="font-weight: 300;"> {{ result.album.artists.0.name }} </h5>
+            </div>
+
+            <div></div>
+            <div style="display: grid; place-items: center;">
+                <div style="display: grid; place-items: center;">
+                    <p> {{ result.album.name }}</p>
+                </div>
+            </div>
+            <div></div>
+
+            <div style="display: grid; place-items: center;">
+                <p> {{ result.explicit }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+
+</section>
+
+{% endblock %}

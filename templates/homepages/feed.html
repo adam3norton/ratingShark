@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section>
+    <h1>Feed</h1>
+    <section class="review">
+        <hr>
+        <h5>{{ post.DateTime }}</h5>
+        <h3>{{ post.User }}, your <b>{{ post.ConnectionToUser }}</b></h3>
+        <h1>{{ post.Album }}</h1>
+        <h1>{{ post.Stars }}</h1>
+        <hr>
+    </section>
+</section>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section style="padding: 12px;">
+    <h1>New Review</h1>
+    <form method="GET">
+        <input type='text' name="name" placeholder="Search...">
+        <button type='submit' class="search-button" style="cursor: pointer;">
+            <h4>Search</h4>
+        </button>
+    </form>
+</section>
+
+<section style="padding: 12px;">
+    <div style="padding: 10px 20px 20px 20px;">
+        <h3 style="font-size: 22px;">Top Result</h3>
+    </div>
+    <div class="top-artist-result">
+        <img style="width: 100px; height: 100px; border-radius: 50%;" src="{{ results.artists.items.0.images.0.url }}"
+            alt="">
+        <div style="height: 40px; display: grid; place-items: center start; padding: 10px;">
+            <h3 style="font-size: 24px;">{{ results.artists.items.0.name }}</h3>
+        </div>
+        <div style="height: 20px; display: grid; place-items: center start;">
+            <h4 style="font-size: 14px; margin: 0">ARTIST</h4>
+        </div>
+
+    </div>
+    <div style="padding: 10px 20px 20px 20px;">
+        <h3 style="font-size: 22px;">Artists</h3>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(5, 1fr);">
+        {% for artist in results.artists.items|slice:"1:6" %}
+        <div class="artist">
+            <!-- <div style="display: grid; place-items: center; padding: 10px;">
+            <h5> {{ forloop.counter }} </h5>
+        </div> -->
+            <img style="width: 150px; height: 150px; border-radius: 50%;" src="{{ artist.images.0.url }}" alt="">
+            <p>{{ artist.name }}</p>
+            <p>ARTIST</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+
+</section>
+
+{% endblock %}
