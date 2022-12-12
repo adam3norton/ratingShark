@@ -32,7 +32,7 @@ class User(models.Model):
     phone = models.CharField(max_length=13, blank=True)
 
     class Meta:
-        db_table = "patient"
+        db_table = "user"
 
     def __str__(self) :
         return (self.full_name)

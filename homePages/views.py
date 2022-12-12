@@ -2,6 +2,12 @@ from django.shortcuts import render
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
+from homePages.models import User
+
+loggedIn = False
+loggedInUsername = ""
+loggedInUserId = None
+
 # Create your views here.
 def indexPageView(request):
     context = {
@@ -11,7 +17,8 @@ def indexPageView(request):
             'Album': '2014 Forest Hills Drive',
             'Stars': 4.5,
             'DateTime': '12-13-2014',
-        }
+        },
+        'loggedin': loggedIn,
     }
     return render(request,'homePages/feed.html', context)
 
@@ -59,3 +66,93 @@ def profilePageView(request):
 def searchPageView(request):
     context = {}
     return render(request,'homePages/search.html', context)
+
+def loginPageView(request, method):
+    global loggedIn
+    global loggedInUserId
+    global loggedInUsername
+    errors = []
+    errors.clear()
+    # signin, signup, signout
+
+    if request.method == 'POST' and method == "signupform":
+        errors.clear()
+        email = request.POST['email']
+        username = request.POST['username']
+
+        data = User.objects.all()
+
+        for user in data:
+            if email == user.email:
+                errors.append("This email has already been registered") 
+            if username == user.username:
+                errors.append("This username is already taken")
+
+        if len(errors) != 0:
+            context = {
+                    "display" : "signup",
+                    "errors" : errors,
+                }
+            return render(request, 'homepages/login.html', context)
+        else:
+            user = User()
+
+            user.first_name = request.POST['first_name']
+            user.last_name = request.POST['last_name']
+            user.username = request.POST['username']
+            user.password = request.POST['password']
+            user.email = request.POST['email']
+            user.phone = request.POST['phone']
+
+            user.save()
+
+            loggedIn = True
+            loggedInUserId = user.id
+            loggedInUsername = user.username
+
+            return indexPageView(request)
+
+    elif request.method == 'POST' and method == "signinform":
+        
+        username = request.POST['username']
+        password = request.POST['password']
+        notFound = False
+
+        data = User.objects.all()
+
+        for user in data:
+            if username == user.username and password == user.password:
+                loggedIn = True
+                loggedInUserId = user.id
+                loggedInUsername = user.username
+                return indexPageView(request)
+            else :
+                notFound = True
+            
+        if notFound:
+            context = {
+                "display" : "signin",
+                "errors" : "The username or password is incorrect"
+            }
+            return render(request, 'homepages/login.html', context)
+
+    else:
+        if method == 'signin':
+            context = {
+                "display": "signin",
+            }
+        elif method == 'signup':
+
+
+            context = {
+                "display": 'signup',
+            }
+
+        return render(request, 'homepages/login.html', context)
+
+def SignOutPageView(request):
+    global loggedIn
+    global loggedInUserId
+    loggedIn = False
+    loggedInUserId = None
+    return indexPageView(request)

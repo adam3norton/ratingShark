@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import indexPageView, chartsPageView, newReviewPageView, profilePageView, searchPageView
+from .views import indexPageView, chartsPageView, newReviewPageView, profilePageView, searchPageView, loginPageView, SignOutPageView
 
 urlpatterns = [
     path("feed/", indexPageView, name="feed"),
@@ -7,5 +7,7 @@ urlpatterns = [
     path("new-review/", newReviewPageView, name="new-review"),
     path("profile/", profilePageView, name="profile"),
     path("search/", searchPageView, name="search"),
+    path("login/<str:method>/", loginPageView, name="login"),
+    path("signout/", SignOutPageView, name="signout" ),
     path("", indexPageView, name="index"),
 ]

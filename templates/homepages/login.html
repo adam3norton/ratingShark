@@ -1,0 +1,120 @@
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+        <title>RatingShark</title>
+        <link href="{% static 'css/home.css' %}" rel="stylesheet" />
+        <link href="{% static 'css/logfood.css' %}" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+            rel="stylesheet">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+        
+    </head>
+
+    {% if display == 'signup'  %}
+        <div></div>
+        <div class = "col-md-4 justify-content-center">
+            <div class = "border p-3 shadow" >
+                <h4>Sign up</h4>
+                <hr>
+
+                {% if errors == ""%}
+                {%else%}
+                {% for error in errors%}
+                <p style="color:red; text-align:center">{{ error }}</p>
+                {% endfor %}
+                {% endif %}
+
+                <form name="signupform" method="post" action="{%url 'login' method='signupform' %}">
+                    {% csrf_token %}
+                    <div class="form-input">
+                        <label for="first_name">First name:</label>
+                        <input type="text" name="first_name" id="first_name" autofocus required />
+                    </div>
+
+                    <div class="form-input">
+                        <label for="last_name">Last name:</label>
+                        <input type="text" name="last_name" id="last_name" required />
+                    </div>
+
+                    <div class="form-input">
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" id="email" required />
+                    </div>
+
+                    <div class="form-input">
+                        <label for="phone">Phone:</label>
+                        <input type="text" name="phone" id="phone" minlength="10" maxlength="10" />
+                    </div>
+
+                    <div class="form-input">
+                        <label for="age">Age:</label>
+                        <input type="number" name="age" id="age" required />
+                    </div>
+
+                    <div class="form-input">
+                        <label for="username">User Name:</label>
+                        <input type="text" name="username" id="username" required />
+                    </div>
+
+                    <div class="form-input">
+                        <label for="password">Password:</label>
+                        <input type="text" name="password" id="password" required />
+                    </div>
+
+                    <div style="display: grid; place-items: center;">
+                        <button type="submit" class="login-submit-button">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div></div>
+    
+    {% else %}
+
+    <div></div>
+        <div class = "col-md-4 justify-content-center">
+            <div class = "border p-3 shadow" >
+                <h4>Sign in</h4>
+                <hr>
+                {% if errors == ""%}
+                {%else%}
+                <p>{{ errors }}</p>
+                {% endif %}
+                <form name="signinform" method="post" action="{% url 'login' method='signinform' %}">
+                    {% csrf_token %}
+                    <div style="display: grid; place-items: center;">
+                        <div class="form-input">
+                            <label for="username">User Name:</label>
+                            <input type="text" name="username" id="username" required />
+                        </div>
+
+                        <div class="form-input">
+                            <label for="password">Password:</label>
+                            <input type="password" name="password" id="password" hint="password" required />
+                        </div>
+                        <div style="padding-top: 60px;">
+                            <button type="submit" class="login-submit-button">Sign In</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div></div>
+
+    {% endif %}
+
+
+    {% endblock %}
+
+</html>

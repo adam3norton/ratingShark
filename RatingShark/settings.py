@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'homePages.apps.HomepagesConfig',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -81,10 +82,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ratingshark',
         'USER' : 'postgres',
-        'PASSWORD' : "admin",
+        'PASSWORD' : "th!sismyd@tab@sePa55word",
         'HOST': 'localhost'
     }
 }
+# th!sismyd@tab@sePa55word
 
 
 # Password validation
@@ -131,3 +133,5 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

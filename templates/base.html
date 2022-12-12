@@ -16,6 +16,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
+    
 </head>
 
 <section style="display: grid; grid-template-columns: auto 1fr auto 1fr auto auto; background-color: #c9f79a;
@@ -47,12 +48,29 @@
     </div>
     <div></div>
 
-    <div style="min-width: 100px; display: grid; place-items: center;">
-        <h5>Sign up</h5>
-    </div>
-    <div style="min-width: 100px; display: grid; place-items: center;">
-        <h5>Sign in</h5>
-    </div>
+    {% if loggedin %}
+        <div style="min-width: 100px; display: grid; place-items: center;">
+            <a href="{% url 'signout' %}" style="text-decoration: none;">
+                <h5>Sign out</h5>
+            </a>
+        </div>
+        
+    {% else %}
+
+        <div style="min-width: 100px; display: grid; place-items: center;">
+            <a href="{% url 'login' method='signup' %}" style="text-decoration: none;">
+                <h5>Sign up</h5>
+            </a>
+        </div>
+
+        
+        <div style="min-width: 100px; display: grid; place-items: center;">
+            <a href="{% url 'login' method='signin' %}" style="text-decoration: none;">
+                <h5>Sign in</h5>
+            </a>
+        </div>
+
+    {% endif %}
 </section>
 
 <section style="min-height: 40px; background-color: #000000; display: grid; place-items: center;">
