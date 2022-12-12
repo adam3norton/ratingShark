@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
@@ -10,17 +10,33 @@ loggedInUserId = None
 
 # Create your views here.
 def indexPageView(request):
-    context = {
-        'post' : {
-            'User': 'Trey Jackson',
-            'ConnectionToUser' : 'Friend',
-            'Album': '2014 Forest Hills Drive',
-            'Stars': 4.5,
-            'DateTime': '12-13-2014',
-        },
-        'loggedin': loggedIn,
-    }
-    return render(request,'homePages/feed.html', context)
+    if loggedInUserId != None:
+        userData = User.objects.get(id = loggedInUserId)
+
+        context = {
+            'post' : {
+                'User': 'Trey Jackson',
+                'ConnectionToUser' : 'Friend',
+                'Album': '2014 Forest Hills Drive',
+                'Stars': 4.5,
+                'DateTime': '12-13-2014',
+            },
+            'loggedin': loggedIn,
+            'userData': userData,
+        }
+        return render(request,'homePages/feed.html', context)
+    else:
+        context = {
+            'post' : {
+                'User': 'Trey Jackson',
+                'ConnectionToUser' : 'Friend',
+                'Album': '2014 Forest Hills Drive',
+                'Stars': 4.5,
+                'DateTime': '12-13-2014',
+            },
+            'loggedin': loggedIn,
+        }
+        return render(request,'homePages/feed.html', context)
 
 def chartsPageView(request):
 
@@ -110,7 +126,7 @@ def loginPageView(request, method):
             loggedInUserId = user.id
             loggedInUsername = user.username
 
-            return indexPageView(request)
+            return redirect(indexPageView)
 
     elif request.method == 'POST' and method == "signinform":
         
@@ -125,7 +141,7 @@ def loginPageView(request, method):
                 loggedIn = True
                 loggedInUserId = user.id
                 loggedInUsername = user.username
-                return indexPageView(request)
+                return redirect(indexPageView)
             else :
                 notFound = True
             
@@ -155,4 +171,4 @@ def SignOutPageView(request):
     global loggedInUserId
     loggedIn = False
     loggedInUserId = None
-    return indexPageView(request)
+    return redirect(indexPageView)

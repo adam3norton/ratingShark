@@ -3,7 +3,12 @@
 {% block content %}
 
 <section>
+    {% if loggedin %}
+    <h1>Feed for {{userData.first_name}}</h1>
+    {% else %}
     <h1>Feed</h1>
+    {% endif %}
+    
     <section class="review">
         <hr>
         <h5>{{ post.DateTime }}</h5>
