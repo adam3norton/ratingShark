@@ -295,9 +295,3 @@ def explorePageView(request):
         'results': results
     }
     return render(request,'homePages/explore.html', context)
-
-
-
-
-
-    
