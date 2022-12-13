@@ -50,7 +50,8 @@ def chartsPageView(request):
     final_result = results['tracks'][:10]
 
     context = {
-        'results' : final_result
+        'results' : final_result,
+        'loggedin': loggedIn,
     }
     return render(request,'homePages/charts.html', context)
 
@@ -70,20 +71,33 @@ def newReviewPageView(request):
 
 
     context = {
-        'results': results
+        'results': results,
+        'loggedin': loggedIn,
     }
     return render(request,'homePages/new-review.html', context)
 
 
 def profilePageView(request):
-    context = {}
-    return render(request,'homePages/profile.html', context)
+
+    if not loggedIn:
+        return redirect(loginPageView, method = 'signin')
+    else:
+
+        userData = User.objects.get(id = loggedInUserId)
+
+        context = {
+            'loggedin': loggedIn,
+            'userData': userData
+        }
+        return render(request,'homePages/profile.html', context)
 
 def searchPageView(request):
-    context = {}
+    context = {
+        'loggedin': loggedIn,
+    }
     return render(request,'homePages/search.html', context)
 
-def loginPageView(request, method):
+def loginPageView(request, method = 'signin'):
     global loggedIn
     global loggedInUserId
     global loggedInUsername
@@ -158,8 +172,6 @@ def loginPageView(request, method):
                 "display": "signin",
             }
         elif method == 'signup':
-
-
             context = {
                 "display": 'signup',
             }
