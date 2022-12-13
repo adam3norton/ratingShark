@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 
+{% if display == "homeAccount" %}
 <section>
     <h1>Profile</h1>
     <section class="review">
@@ -18,7 +19,10 @@
     <h2>Favorite Albums</h2>
     <section class="review">
         <hr>
-
+        {% for favorite in userFavorites %}
+        <h3>{{favorite.album}}</h3>
+        <hr>
+        {% endfor %}
         <hr>
     </section>
 
@@ -32,7 +36,100 @@
         {% endfor %}
         <hr>
     </section>
+    <section>
+        
+        <div class="account-button">
+            <a href="{% url 'profile' method='editUser'%}">
+                <h4>Edit Info</h4>
+            </a>
+        </div>
 
-</section>
+    
+        <div class="account-button">
+            <a href="{% url 'profile' method='changeLoginInfo'%}">
+                <h4>Change Username/Password</h4>
+            </a>
+        </div>
+{% elif display == "editUser" %}
+    <section class="big-white-box">
+        <h3>Edit User Information</h3>
+        <form name="form" method="post" action="{%url 'profile' method='editUserForm'%}" style="padding: 40px 0 40px 0;">
+            {% csrf_token %}
+            
+            <label for="first_name">First name:</label>
+            <input
+            type="text"
+            name="first_name"
+            id="first_name"
+            value="{{userData.first_name}}"
+            autofocus
+            />
+            <br /><br />
+    
+            <label for="last_name">Last name:</label>
+            <input
+            type="text"
+            name="last_name"
+            id="last_name"
+            value="{{userData.last_name}}"
+            />
+            <br /><br />
+    
+            <label for="age">Age: </label>
+            <input type="text" name="age" id="age" value="{{userData.age}}" />
+            <br /><br />
+    
+            <label for="email">Email: </label>
+            <input type="text" name="email" id="email" value="{{userData.email}}" />
+            <br /><br />
+    
+            <label for="phone">Phone: </label>
+            <input type="text" name="phone" id="phone" value="{{userData.phone}}" />
+            <br /><br />
+            
+            <br><br>
+            <button type="submit" class="account-button" style="background-color: #ec995a; color: white; max-width: 280px; min-width: 280px; border: none;">Update</button>
+        </form>
+        
+            <div class="account-button" style="max-width: 280px;">
+                <a href="{% url 'profile' method='homeAccount'%}">
+                    <h4>Cancel</h4>
+                </a>
+            </div>
+    </section>
+
+    {% else %}
+
+    <section class="big-white-box">
+        <h3>Change username and password</h3>
+            <form name="form" method="post" action="{%url 'profile' method='editUandP'%}" style="padding: 40px 0 40px 0;">
+                {% csrf_token %}
+
+                <label for="username">User Name:</label>
+                <input
+                type="text"
+                name="username"
+                id="username"
+                value="{{userData.username}}"
+                />
+                <br /><br />
+        
+                <label for="password">Password:</label>
+                <input
+                type="text"
+                name="password"
+                id="password"
+                value="{{userData.password}}"
+                />
+                <br /><br />
+                <button type="submit" class="account-button" style="background-color: #ec995a; color: white; max-width: 280px; min-width: 280px; border: none;">Update</button>
+            </form>
+            <div class="account-button" style="max-width: 280px;">
+                <a href="{% url 'profile' method='homeAccount'%}">
+                    <h4>Cancel</h4>
+                </a>
+            </div>
+    </section>
+{% endif %}
 
 {% endblock %}

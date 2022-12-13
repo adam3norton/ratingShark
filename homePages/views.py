@@ -164,20 +164,65 @@ def createReviewPageView(request, id):
         }
         return render(request, 'homePages/create-review.html', context)
 
-def profilePageView(request):
+def profilePageView(request, method):
 
     if not loggedIn:
         return redirect(loginPageView, method = 'signin')
+    elif request.method == 'POST' and method == "editUserForm":
+        user = User.objects.get(id = loggedInUserId)
+
+        user.first_name = request.POST['first_name']
+        user.last_name = request.POST['last_name']
+        user.age = request.POST['age']
+        user.email = request.POST['email']
+        user.phone = request.POST['phone']
+
+        user.save()
+        
+        return redirect(profilePageView, method = 'homeAccount')
+
+    elif request.method == 'POST' and method == "editUandP":
+        user = User.objects.get(id=loggedInUserId)
+
+        user.username = request.POST['username']
+        user.password = request.POST['password']
+
+        user.save()
+        
+        return redirect(profilePageView, method = 'homeAccount')
     else:
         userData = User.objects.get(id = loggedInUserId)
         userReviews = Review.objects.filter(user_id = loggedInUserId)
+        userFavorites = User_Favorite_Album.objects.filter(user_id = loggedInUserId)
+        if method == "homeAccount":
+            context = {
+                'loggedin': loggedIn,
+                'userData': userData,
+                'display': "homeAccount",
+                'userReviews': userReviews,
+                'userFavorites': userFavorites,
+            }
+            return render(request,'homePages/profile.html', context)
+        elif method == "editUser":
+            context = {
+                'loggedin': loggedIn,
+                'userData': userData,
+                'display': "editUser",
+                'userReviews': userReviews,
+                'userFavorites': userFavorites,
+            }
+            return render(request,'homePages/profile.html', context)
+        else :
+            context = {
+                'loggedin': loggedIn,
+                'userData': userData,
+                'display': "editUandP",
+                'userReviews': userReviews,
+                'userFavorites': userFavorites,
+            }
+            return render(request,'homePages/profile.html', context)
 
-        context = {
-            'loggedin': loggedIn,
-            'userData': userData,
-            'userReviews': userReviews,
-        }
-        return render(request,'homePages/profile.html', context)
+
 
 def searchPageView(request):
     context = {
@@ -219,6 +264,7 @@ def loginPageView(request, method = 'signin'):
 
             user.first_name = request.POST['first_name']
             user.last_name = request.POST['last_name']
+            user.age = request.POST['age']
             user.username = request.POST['username']
             user.password = request.POST['password']
             user.email = request.POST['email']
