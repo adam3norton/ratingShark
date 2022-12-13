@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div style="padding: 18px;">
+    <section style="background-color: #f6f6f6; padding: 10px; border-radius: 10px; display: grid; grid-template-columns: 220px auto;">
+        <div>
+            <img src="{{ results.images.0.url }}" alt="" style="width: 200px; height: 200px;">
+            <h4>{{ results.name }}</h4>
+            <h5>Released {{ results.release_date }}</h5>
+        </div>
+        <div style="columns: 3 150px;">
+            {% for track in results.tracks.items %}
+            <p style="font-size: 14px; margin: 0;">{{ track.name }}</p>
+            {% endfor %}
+        </div>
+        <div style="padding: 15px 0 0 0;">
+            <form method="POST">
+                {% csrf_token %}
+                <div style="display: grid; grid-template-rows: auto auto auto auto auto; gap: 20px;">
+                    <p>Stars out of 5</p>
+                    <input class="rating-input-stars" type='number' name="stars">
+
+                    <!-- <p>Review</p>
+                    <input class="rating-input-text" type='text' name="name"> -->
+                    <button type='submit' class="search-button" style="cursor: pointer;">
+                        <h4>Submit</h4>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+    <p>{{ results.id }}</p>
+</div>
+
+{% endblock %}
