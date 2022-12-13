@@ -8,15 +8,21 @@
     {% else %}
     <h1>Feed</h1>
     {% endif %}
-    
-    <section class="review">
-        <hr>
-        <h5>{{ post.DateTime }}</h5>
-        <h3>{{ post.User }}, your <b>{{ post.ConnectionToUser }}</b></h3>
-        <h1>{{ post.Album }}</h1>
-        <h1>{{ post.Stars }}</h1>
-        <hr>
+
+    <div style="display: grid; place-items: center;">
+    <section class="review-list">
+        {% for review in reviews %}
+        <div class="review">
+            <hr>
+            <h3 style="font-size: 13px; letter-spacing: 3px;">{{ review.user }}</h3>
+            <h1>{{ review.album }}</h1>
+            <img src="" alt="">
+            <h1>{{ review.stars }}</h1>
+            <hr>
+        </div>
+        {% endfor %}
     </section>
+</div>
 </section>
 
 {% endblock %}

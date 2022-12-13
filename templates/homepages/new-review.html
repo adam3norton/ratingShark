@@ -12,7 +12,9 @@
     </form>
 </section>
 
+
 <section style="padding: 12px;">
+    {% if 'name' in request.GET %}
     <div style="padding: 10px 20px 20px 20px;">
         <h3 style="font-size: 22px;">Top Result</h3>
     </div>
@@ -46,10 +48,10 @@
         </a>
         {% endfor %}
     </div>
-
-    <hr>
-    <p> {{ results.artists.items.0.external_urls.spotify }}</p>
-
+    {% else %}
+    <h4>Search an Artist Name</h4>
+    {% endif %}
 </section>
+
 
 {% endblock %}

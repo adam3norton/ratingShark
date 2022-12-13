@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
-from homePages.models import User
+from homePages.models import Album, Review, User
 
 loggedIn = False
 loggedInUsername = ""
@@ -10,30 +10,21 @@ loggedInUserId = None
 
 # Create your views here.
 def indexPageView(request):
+    reviewData = Review.objects.all()
+    print("\nReviews:")
+    print(reviewData)
+
     if loggedInUserId != None:
         userData = User.objects.get(id = loggedInUserId)
-
         context = {
-            'post' : {
-                'User': 'Trey Jackson',
-                'ConnectionToUser' : 'Friend',
-                'Album': '2014 Forest Hills Drive',
-                'Stars': 4.5,
-                'DateTime': '12-13-2014',
-            },
+            'reviews' : reviewData,
             'loggedin': loggedIn,
             'userData': userData,
         }
         return render(request,'homePages/feed.html', context)
     else:
         context = {
-            'post' : {
-                'User': 'Trey Jackson',
-                'ConnectionToUser' : 'Friend',
-                'Album': '2014 Forest Hills Drive',
-                'Stars': 4.5,
-                'DateTime': '12-13-2014',
-            },
+            'reviews' : reviewData,
             'loggedin': loggedIn,
         }
         return render(request,'homePages/feed.html', context)
@@ -56,20 +47,23 @@ def chartsPageView(request):
     return render(request,'homePages/charts.html', context)
 
 def newReviewPageView(request):
+    if loggedInUserId == None:
+        return loginPageView(request, {'method': "signin"})
+    else:
 
-    # if 'name' in request.GET:
-        # name = request.GET['name']
-        # response=requests.get(f'https://api.nal.usda.gov/fdc/v1/foods/search?query={name}&dataType=&pageSize=8&pageNumber=1&sortBy=dataType.keyword&sortOrder=desc&api_key={settings.API_KEY}')
-        # data = response.json()
-        # searchedFoods = data['foods']
-    results = {}
-    spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='3396d07feb1b47d2bfe027c51e261c82',
-                                                                                  client_secret='7b684d65fe35451db6b21f4efeb2bd93'))
-    if 'name' in request.GET:
-        name = request.GET['name']
-        results = spotify.search(q='artist:' + name, type='artist')
+        # if 'name' in request.GET:
+            # name = request.GET['name']
+            # response=requests.get(f'https://api.nal.usda.gov/fdc/v1/foods/search?query={name}&dataType=&pageSize=8&pageNumber=1&sortBy=dataType.keyword&sortOrder=desc&api_key={settings.API_KEY}')
+            # data = response.json()
+            # searchedFoods = data['foods']
+        results = {}
+        spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='3396d07feb1b47d2bfe027c51e261c82',
+                                                                                    client_secret='7b684d65fe35451db6b21f4efeb2bd93'))
+        if 'name' in request.GET:
+            name = request.GET['name']
+            results = spotify.search(q='artist:' + name, type='artist')
 
-    # uri = results.artists.items[0].external_urls.spotify.split('/')[-1]
+        # uri = results.artists.items[0].external_urls.spotify.split('/')[-1]
 
 
     context = {
@@ -80,8 +74,53 @@ def newReviewPageView(request):
     return render(request,'homePages/new-review.html', context)
 
 def artistAlbumsPageView(request, name):
-    context = {}
-    return render(request, 'homePages/artist-albums.html', context)
+    if loggedInUserId == None:
+        return loginPageView(request, {'method': "signin"})
+    else:
+        results = {}
+        spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='3396d07feb1b47d2bfe027c51e261c82',
+                                                                                    client_secret='7b684d65fe35451db6b21f4efeb2bd93'))
+        results = spotify.search(q='artist:' + name, type='album')
+        context = {
+            'results': results
+        }
+        return render(request, 'homePages/artist-albums.html', context)
+
+def createReviewPageView(request, id):
+    if loggedInUserId == None:
+        return loginPageView(request, {'method': "signin"})
+    else:
+        results = {}
+        spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='3396d07feb1b47d2bfe027c51e261c82',
+                                                                                    client_secret='7b684d65fe35451db6b21f4efeb2bd93'))
+        results = spotify.album(id)
+        album_name = results['name']
+        album_uri = results['id']
+
+        if request.method == 'POST':
+            stars = request.POST['stars']
+
+            print('Username: ', loggedInUsername)
+            print('Album_Name: ', album_name)
+
+            album_object = Album(
+                name = album_name,
+                uri = album_uri
+            )
+            album_object.save()
+
+            reviewObject = Review(
+                user = User.objects.get(username = loggedInUsername),
+                album = album_object,
+                stars = stars
+            )
+            reviewObject.save()
+            return redirect(indexPageView)
+
+        context = {
+            'results': results
+        }
+        return render(request, 'homePages/create-review.html', context)
 
 def profilePageView(request):
 
@@ -109,6 +148,7 @@ def loginPageView(request, method = 'signin'):
     global loggedInUsername
     errors = []
     errors.clear()
+    context = {}
     # signin, signup, signout
 
     if request.method == 'POST' and method == "signupform":
@@ -181,6 +221,11 @@ def loginPageView(request, method = 'signin'):
         elif method == 'signup':
             context = {
                 "display": 'signup',
+            }
+
+        if context == {}:
+            context = {
+                'display': 'signin'
             }
 
         return render(request, 'homepages/login.html', context)
