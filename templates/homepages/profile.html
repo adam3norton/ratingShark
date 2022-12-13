@@ -6,12 +6,32 @@
     <h1>Profile</h1>
     <section class="review">
         <hr>
-        <h5>{{ userData.first_name }}</h5>
-        <h3>{{ post.User }}, your <b>{{ post.ConnectionToUser }}</b></h3>
-        <h1>{{ post.Album }}</h1>
-        <h1>{{ post.Stars }}</h1>
+        <h3>First Name: {{ userData.first_name }}</h3>
+        <h3>Last Name: {{ userData.last_name }}</h3>
+        <h3>Age: {{ userData.age }}</h3>
+        <h3>Email: {{ userData.email }}</h3>
+        <h3>Phone: {{ userData.phone }}</h3>
         <hr>
     </section>
+
+
+    <h2>Favorite Albums</h2>
+    <section class="review">
+        <hr>
+
+        <hr>
+    </section>
+
+    <h2>Reviews You've Made</h2>
+    <section class="review">
+        <hr>
+        {% for review in userReviews %}
+        <h3>{{review.album}}</h3>
+        <h3>{{review.stars}}</h3>
+        {% endfor %}
+        <hr>
+    </section>
+
 </section>
 
 {% endblock %}

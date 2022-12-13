@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
-from homePages.models import Album, Review, User
+from homePages.models import Album, Review, User, User_Favorite_Album
 
 loggedIn = False
 loggedInUsername = ""
@@ -127,12 +127,13 @@ def profilePageView(request):
     if not loggedIn:
         return redirect(loginPageView, method = 'signin')
     else:
-
         userData = User.objects.get(id = loggedInUserId)
+        userReviews = Review.objects.filter(user_id = loggedInUserId)
 
         context = {
             'loggedin': loggedIn,
-            'userData': userData
+            'userData': userData,
+            'userReviews': userReviews,
         }
         return render(request,'homePages/profile.html', context)
 
