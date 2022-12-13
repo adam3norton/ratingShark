@@ -68,12 +68,18 @@ def newReviewPageView(request):
         name = request.GET['name']
         results = spotify.search(q='artist:' + name, type='artist')
 
+    # uri = results.artists.items[0].external_urls.spotify.split('/')[-1]
+
 
     context = {
-        'results': results
+        'results': results,
+        # 'uri': uri
     }
     return render(request,'homePages/new-review.html', context)
 
+def artistAlbumsPageView(request, name):
+    context = {}
+    return render(request, 'homePages/artist-albums.html', context)
 
 def profilePageView(request):
     context = {}
@@ -98,11 +104,12 @@ def loginPageView(request, method):
 
         data = User.objects.all()
 
-        for user in data:
-            if email == user.email:
-                errors.append("This email has already been registered") 
-            if username == user.username:
-                errors.append("This username is already taken")
+        if len(data) > 0:
+            for user in data:
+                if email == user.email:
+                    errors.append("This email has already been registered") 
+                if username == user.username:
+                    errors.append("This username is already taken")
 
         if len(errors) != 0:
             context = {
