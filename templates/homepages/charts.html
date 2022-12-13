@@ -3,34 +3,70 @@
 {% block content %}
 
 <section>
-    <h1>Charts</h1>
-    <section style="padding: 10px;">
-        {% for result in results %}
-        <div class="song">
-            <div style="display: grid; place-items: center; padding: 10px;">
-                <h5> {{ forloop.counter }} </h5>
-            </div>
-
-            <img style="width: 40px; height: 40px;" src="{{ result.album.images.0.url }}" alt="">
-            <div style="display: grid; grid-template-rows: 1fr 1fr; padding: 0 0 0 12px; min-width: 200px; max-width: 200px;">
-                <h5> {{ result.name }}</h5>
-                <h5 style="font-weight: 300;"> {{ result.album.artists.0.name }} </h5>
-            </div>
-
-            <div></div>
-            <div style="display: grid; place-items: center;">
-                <div style="display: grid; place-items: center;">
-                    <p> {{ result.album.name }}</p>
+    <h1>Top Songs</h1>
+     <form method="GET">
+        <input type='text' name="name" placeholder="Search...">
+        <button type='submit' class="search-button" style="cursor: pointer;">
+            <h4>Search</h4>
+        </button>
+    </form>
+        <section style="padding: 10px;">
+            {% for result in results %}
+            <div class="song">
+                <div style="display: grid; place-items: center; padding: 10px;">
+                    <h5> {{ forloop.counter }} </h5>
                 </div>
+
+                <img style="width: 40px; height: 40px;" src="{{ result.album.images.0.url }}" alt="">
+                <div style="display: grid; grid-template-rows: 1fr 1fr; padding: 0 0 0 12px; min-width: 200px; max-width: 200px;">
+                    <h5> {{ result.name }}</h5>
+                    <h5 style="font-weight: 300;"> {{ result.album.artists.0.name }} </h5>
+                </div>
+
+                <div></div>
+                <div style="display: grid; place-items: center;">
+                    <div style="display: grid; place-items: center;">
+                        <p> {{ result.album.name }}</p>
+                    </div>
+                </div>
+                <div></div>
+
+                {% comment %} <div style="display: grid; place-items: center;">
+                    <p> {{ result.explicit }}</p>
+                </div> {% endcomment %}
+
             </div>
-            <div></div>
+        </section>
+        <section style="padding: 10px;">
+            {% endfor %}
+            <div>
+            <h1>Recommended Songs</h1>
+            </div>
+            <p>{{topArtist.artists.items.0.id}}</p>
+    
+            {% for recommendation in recommendations.tracks%}
 
             <div style="display: grid; place-items: center;">
-                <p> {{ result.explicit }}</p>
+                <p>{{recommendation.name}}</p>
+                <p>{{recommendation.album.artists.0.name}}</p>
+                <img src="{{recommendation.album.images.0.url}}">
             </div>
-        </div>
-        {% endfor %}
-    </section>
+            {%endfor%}
+        
+
+
+            {% comment %} {% for recommendation in recommendations %}
+        
+            <div style="display: grid; place-items: center;">
+                <p>{{recommendation}}</p>
+            </div>
+            {% endfor%} {% endcomment %}
+        
+            {% comment %} {% for track in results %}
+                <h1>{{ track.name }}</h1>
+                <p>{{ track.artist }}</p>
+            {% endfor %} {% endcomment %}
+        </section>
 
 </section>
 
