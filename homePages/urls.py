@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import indexPageView, chartsPageView, newReviewPageView, profilePageView, searchPageView, loginPageView, SignOutPageView
+from .views import indexPageView, chartsPageView, newReviewPageView, profilePageView, searchPageView, loginPageView, SignOutPageView, explorePageView
 
 urlpatterns = [
+    path("explore", explorePageView, name="explore"),
     path("feed/", indexPageView, name="feed"),
     path("charts/", chartsPageView, name="charts"),
     path("new-review/", newReviewPageView, name="new-review"),

@@ -172,3 +172,20 @@ def SignOutPageView(request):
     loggedIn = False
     loggedInUserId = None
     return redirect(indexPageView)
+
+
+def explorePageView(request):
+    query = "Justin Beiber"
+    results = {}
+    spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='3396d07feb1b47d2bfe027c51e261c82',
+                                                                                  client_secret='7b684d65fe35451db6b21f4efeb2bd93'))
+
+    if 'name' in request.GET:
+        query = request.GET['name']
+        results = spotify.search(q=query, type='track,artist,album')
+
+
+    context = {
+        'results': results
+    }
+    return render(request,'homePages/explore.html', context)
