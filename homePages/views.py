@@ -47,7 +47,7 @@ def chartsPageView(request):
 
 def newReviewPageView(request):
     if loggedInUserId == None:
-        return loginPageView(request, {'method': "signinform"})
+        return loginPageView(request, {'method': "signin"})
     else:
 
         # if 'name' in request.GET:
@@ -73,7 +73,7 @@ def newReviewPageView(request):
 
 def artistAlbumsPageView(request, name):
     if loggedInUserId == None:
-        return loginPageView(request, {'method': "signinform"})
+        return loginPageView(request, {'method': "signin"})
     else:
         results = {}
         spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='3396d07feb1b47d2bfe027c51e261c82',
@@ -86,7 +86,7 @@ def artistAlbumsPageView(request, name):
 
 def createReviewPageView(request, id):
     if loggedInUserId == None:
-        return loginPageView(request, {'method': "signinform"})
+        return loginPageView(request, {'method': "signin"})
     else:
         results = {}
         spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='3396d07feb1b47d2bfe027c51e261c82',
@@ -134,6 +134,7 @@ def loginPageView(request, method):
     global loggedInUsername
     errors = []
     errors.clear()
+    context = {}
     # signin, signup, signout
 
     if request.method == 'POST' and method == "signupform":
@@ -204,10 +205,13 @@ def loginPageView(request, method):
                 "display": "signin",
             }
         elif method == 'signup':
-
-
             context = {
                 "display": 'signup',
+            }
+
+        if context == {}:
+            context = {
+                'display': 'signin'
             }
 
         return render(request, 'homepages/login.html', context)
