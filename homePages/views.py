@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+import random
 
 from homePages.models import Album, Review, User, User_Favorite_Album
 
@@ -31,20 +32,64 @@ def indexPageView(request):
 
 def chartsPageView(request):
 
-    # Pritam: 'spotify:artist:4YRxDV8wJFPHPTeXepOstw'
-    # SZA: '7tYKF4w9nC0nq9CsPZTHyP?si=2wlYmg4dS0OIyh0dWpdxeg'
-    # BRUNO: 'https://open.spotify.com/artist/0du5cEVh5yTK9QJze8zA0C?si=LVMf2KsoSSidVm7gsmHN1Q
-    artist_uri = 'spotify:artist:0du5cEVh5yTK9QJze8zA0C'
+    topArtistName = ''
+    query = "Travis Scott"
+    results = {}
     spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='3396d07feb1b47d2bfe027c51e261c82',
                                                                                   client_secret='7b684d65fe35451db6b21f4efeb2bd93'))
+    if 'name' in request.GET:
+        query = request.GET['name']
+        artists = spotify.search(q=query, type='artist')
+
+        topArtistName = artists
+    
+    artistID = topArtistName["artists"]["items"][0]["id"]
+    artist_uri = f'spotify:artist:{artistID}'
     results = spotify.artist_top_tracks(artist_uri)
+  
     final_result = results['tracks'][:10]
+    recommedation_seed = spotify.recommendation_genre_seeds
+    recommendation  = spotify.recommendations(seed_artists=[artistID],
+                                         seed_tracks=['2Q3tt5F2QrB5Qbvz8W7EuL', '3RiF3X9MqLW6GtL6oDZGJc'],
+                                         target_pop=1,
+                                         target_energy=0.5,
+                                         limit=10)
+    
 
     context = {
         'results' : final_result,
+<<<<<<< HEAD
         'loggedin': loggedIn,
+=======
+        'recommendation_seed' : recommedation_seed,
+        'recommendations': recommendation,
+        'topArtist' : topArtistName
+
+>>>>>>> origin/trey
     }
-    return render(request,'homePages/charts.html', context)
+    return render(request,'homePages/charts.html', context) 
+
+
+# def chartsPageView(request):
+
+#     # Pritam: 'spotify:artist:4YRxDV8wJFPHPTeXepOstw'
+#     # SZA: '7tYKF4w9nC0nq9CsPZTHyP?si=2wlYmg4dS0OIyh0dWpdxeg'
+#     # BRUNO: 'https://open.spotify.com/artist/0du5cEVh5yTK9QJze8zA0C?si=LVMf2KsoSSidVm7gsmHN1Q
+#     artist_uri = 'spotify:artist:0du5cEVh5yTK9QJze8zA0C'
+#     spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='3396d07feb1b47d2bfe027c51e261c82',
+#                                                                                   client_secret='7b684d65fe35451db6b21f4efeb2bd93'))
+#     results = spotify.artist_top_tracks(artist_uri)
+#     final_result = results['tracks'][:10]
+#     recommedation_seed = spotify.recommendation_genre_seeds
+
+#     recommendation = spotify.recommendation_
+    
+
+#     context = {
+#         'results' : final_result,
+#         'recommendations' : recommedation_seed
+#     }
+#     return render(request,'homePages/charts.html', context)
 
 def newReviewPageView(request):
     if loggedInUserId == None:
@@ -237,3 +282,25 @@ def SignOutPageView(request):
     loggedIn = False
     loggedInUserId = None
     return redirect(indexPageView)
+
+def explorePageView(request):
+    query = "Justin Beiber"
+    results = {}
+    spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='3396d07feb1b47d2bfe027c51e261c82',
+                                                                                  client_secret='7b684d65fe35451db6b21f4efeb2bd93'))
+
+    if 'name' in request.GET:
+        query = request.GET['name']
+        results = spotify.search(q=query, type='track,artist,album')
+
+
+    context = {
+        'results': results
+    }
+    return render(request,'homePages/explore.html', context)
+
+
+
+
+
+    
