@@ -58,14 +58,11 @@ def chartsPageView(request):
 
     context = {
         'results' : final_result,
-<<<<<<< HEAD
         'loggedin': loggedIn,
-=======
         'recommendation_seed' : recommedation_seed,
         'recommendations': recommendation,
         'topArtist' : topArtistName
 
->>>>>>> origin/trey
     }
     return render(request,'homePages/charts.html', context) 
 
