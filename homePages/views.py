@@ -52,13 +52,13 @@ def chartsPageView(request):
 
         topArtistName = artists
     
-
-    artist_uri = 'spotify:artist:2YZyLoL8N0Wb9xBt1NhZWg'
+    artistID = topArtistName["artists"]["items"][0]["id"]
+    artist_uri = f'spotify:artist:{artistID}'
     results = spotify.artist_top_tracks(artist_uri)
   
     final_result = results['tracks'][:10]
     recommedation_seed = spotify.recommendation_genre_seeds
-    recommendation  = spotify.recommendations(seed_artists=['2YZyLoL8N0Wb9xBt1NhZWg'],
+    recommendation  = spotify.recommendations(seed_artists=[artistID],
                                          seed_tracks=['2Q3tt5F2QrB5Qbvz8W7EuL', '3RiF3X9MqLW6GtL6oDZGJc'],
                                          target_pop=1,
                                          target_energy=0.5,
