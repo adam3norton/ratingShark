@@ -61,7 +61,7 @@ def chartsPageView(request):
         'loggedin': loggedIn,
         'recommendation_seed' : recommedation_seed,
         'recommendations': recommendation,
-        'topArtist' : topArtistName
+        'topArtist' : topArtistName,
 
     }
     return render(request,'homePages/charts.html', context) 
