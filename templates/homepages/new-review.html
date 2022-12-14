@@ -3,9 +3,11 @@
 {% block content %}
 
 <section style="padding: 12px;">
-    <h1>New Review</h1>
+    <div style="padding: 12px;">
+        <h3>Search for an Artist or Album</h3>
+    </div>
     <form method="GET">
-        <input type='text' name="name" placeholder="Search...">
+        <input type='text' name="name" placeholder="Search..." class="search-input">
         <button type='submit' class="search-button" style="cursor: pointer;">
             <h4>Search</h4>
         </button>
@@ -49,7 +51,7 @@
         {% endfor %}
     </div>
     {% else %}
-    <h4>Search an Artist Name</h4>
+    <h4>Recently Reviewed Artists</h4>
     {% endif %}
 </section>
 
