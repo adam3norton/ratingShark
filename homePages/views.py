@@ -369,6 +369,7 @@ def explorePageView(request):
 
 
     context = {
-        'results': results
+        'results': results,
+        'loggedin': loggedIn,
     }
     return render(request,'homePages/explore.html', context)
