@@ -35,7 +35,10 @@ def indexPageView(request):
 def chartsPageView(request):
     if request.method == 'GET':
         topArtistName = ''
-        query = "Travis Scott"
+        query = ""
+        final_result = ""
+        recommedation_seed = ""
+        recommendation = ""
         results = {}
         spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='3396d07feb1b47d2bfe027c51e261c82',
                                                                                     client_secret='7b684d65fe35451db6b21f4efeb2bd93'))
@@ -44,19 +47,18 @@ def chartsPageView(request):
             artists = spotify.search(q=query, type='artist')
 
             topArtistName = artists
+            artistID = topArtistName["artists"]["items"][0]["id"]
+            artist_uri = f'spotify:artist:{artistID}'
+            results = spotify.artist_top_tracks(artist_uri)
         
-        artistID = topArtistName["artists"]["items"][0]["id"]
-        artist_uri = f'spotify:artist:{artistID}'
-        results = spotify.artist_top_tracks(artist_uri)
-    
-        final_result = results['tracks'][:10]
-        recommedation_seed = spotify.recommendation_genre_seeds
-        recommendation  = spotify.recommendations(seed_artists=[artistID],
-                                            seed_tracks=['2Q3tt5F2QrB5Qbvz8W7EuL', '3RiF3X9MqLW6GtL6oDZGJc'],
-                                            target_pop=1,
-                                            target_energy=0.5,
-                                            limit=10)
-        
+            final_result = results['tracks'][:10]
+            recommedation_seed = spotify.recommendation_genre_seeds
+            recommendation  = spotify.recommendations(seed_artists=[artistID],
+                                                seed_tracks=['2Q3tt5F2QrB5Qbvz8W7EuL', '3RiF3X9MqLW6GtL6oDZGJc'],
+                                                target_pop=1,
+                                                target_energy=0.5,
+                                                limit=10)
+            
 
         context = {
             'results' : final_result,

@@ -16,17 +16,19 @@
 {% if 'name' in request.GET %}
     <h2>Artists</h2>
     {% for artist in results.artists.items|slice:"0:3" %}
-        <a href="{% url 'artist-albums' name=artist.name %}">
-            <div class="artist">
-                <img style="width: 150px; height: 150px; border-radius: 50%;" src="{{ artist.images.0.url }}" alt="">
-                <p>{{ artist.name }}</p>
-            </div>
-        </a>
+        <div style="padding: 35px;">
+            <a href="{% url 'artist-albums' name=artist.name %}">
+                <div class="artist">
+                    <img style="width: 150px; height: 150px; border-radius: 50%;" src="{{ artist.images.0.url }}" alt="">
+                    <p>{{ artist.name }}</p>
+                </div>
+            </a>
+        </div>
     {% endfor %}
 
     <h2>Tracks</h2>
     {% for track in results.tracks.items|slice:"0:3" %}
-        <div class="tracks">
+        <div class="tracks" style="padding: 35px;">
             <div>
                 <img style="width: 150px; height: 150px; border-radius: 50%;" src="{{ track.album.images.0.url }}" alt="">
             </div>
@@ -37,12 +39,14 @@
     {% endfor %}
     <h2>Albums</h2>
     {% for album in results.albums.items|slice:"0:5" %}
+    <div style="padding: 35px;">
         <a href="{% url 'create-review' id=album.id %}">
             <div class="albums">
                 <img style="width: 150px; height: 150px; border-radius: 10px;" src="{{ album.images.0.url }}" alt="">
                 <p>{{ album.name }}</p>
             </div>
         </a>
+    </div>
     {% endfor %}
 {% else %}
     <div style="padding: 12px;">
