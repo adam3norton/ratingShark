@@ -24,7 +24,7 @@ def indexPageView(request):
             'loggedin': loggedIn,
             'userData': userData,
         }
-        return render(request,'homePages/feed.html', context)
+        return render(request,'feed.html', context)
     else:
         context = {
             'reviews' : reviewData,
