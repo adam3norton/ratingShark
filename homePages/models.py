@@ -61,6 +61,7 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     stars = models.IntegerField(null=False, blank=False, default=0)
+    album_image = models.CharField(max_length=200, null=True)
 
     class Meta:
         db_table = "review"
