@@ -24,13 +24,13 @@ def indexPageView(request):
             'loggedin': loggedIn,
             'userData': userData,
         }
-        return render(request,'feed.html', context)
+        return render(request,'homePages/feed.html', context)
     else:
         context = {
             'reviews' : reviewData,
             'loggedin': loggedIn,
         }
-        return render(request,'feed.html', context)
+        return render(request,'homePages/feed.html', context)
 
 def chartsPageView(request):
     if request.method == 'GET':
