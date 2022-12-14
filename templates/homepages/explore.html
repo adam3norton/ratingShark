@@ -11,34 +11,40 @@
         </button>
     </form>
 </section>
+{% if 'name' in request.GET %}
+    <h2>Artists</h2>
+    {% for artist in results.artists.items|slice:"0:3" %}
+        <a href="{% url 'artist-albums' name=artist.name %}">
+            <div class="artist">
+                <img style="width: 150px; height: 150px; border-radius: 50%;" src="{{ artist.images.0.url }}" alt="">
+                <p>{{ artist.name }}</p>
+            </div>
+        </a>
+    {% endfor %}
 
-<h2>Artists</h2>
-{% for artist in results.artists.items|slice:"0:3" %}
-    <div class="artist">
-        <img style="width: 150px; height: 150px; border-radius: 50%;" src="{{ artist.images.0.url }}" alt="">
-        <p>{{ artist.name }}</p>
-    </div>
-{% endfor %}
-<h2>Tracks</h2>
-{% for track in results.tracks.items|slice:"0:3" %}
-    <div class="tracks">
-        <div>
-            <img style="width: 150px; height: 150px; border-radius: 50%;" src="{{ track.album.images.0.url }}" alt="">
+    <h2>Tracks</h2>
+    {% for track in results.tracks.items|slice:"0:3" %}
+        <div class="tracks">
+            <div>
+                <img style="width: 150px; height: 150px; border-radius: 50%;" src="{{ track.album.images.0.url }}" alt="">
+            </div>
+            <div>
+                <p>{{ track.name }}</p>
+            </div>
         </div>
-        <div>
-            <p>{{ track.name }}</p>
-        </div>
-    </div>
-{% endfor %}
-<h2>Albums</h2>
-{% for album in results.albums.items|slice:"0:5" %}
-    <div class="albums">
-        <img style="width: 150px; height: 150px; border-radius: 10px;" src="{{ album.images.0.url }}" alt="">
-        <p>{{ album.name }}</p>
-    </div>
-{% endfor %}
-
-
+    {% endfor %}
+    <h2>Albums</h2>
+    {% for album in results.albums.items|slice:"0:5" %}
+        <a href="{% url 'create-review' id=album.id %}">
+            <div class="albums">
+                <img style="width: 150px; height: 150px; border-radius: 10px;" src="{{ album.images.0.url }}" alt="">
+                <p>{{ album.name }}</p>
+            </div>
+        </a>
+    {% endfor %}
+{% else %}
+    <h4>Search for Artists, Tracks, or Albums</h4>
+{% endif %}
 
 
 {% endblock %}

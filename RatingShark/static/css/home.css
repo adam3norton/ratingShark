@@ -104,6 +104,14 @@ a {
     box-shadow: 0px 5px 15px #00000020;
 }
 
+.search-input {
+    min-height: 40px;
+    min-width: 300px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0px 5px 15px #00000020;
+}
+
 .search-button {
     border: none;
     max-width: 80px;
