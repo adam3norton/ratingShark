@@ -79,6 +79,16 @@ TEMPLATES = [
     },
 ]
 
+# Find templates in the same folder as settings.py.
+SETTINGS_PATH = os.path.realpath(os.path.dirname(__file__))
+
+TEMPLATE_DIRS = (
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(SETTINGS_PATH, 'templates'),
+)
+
 WSGI_APPLICATION = 'RatingShark.wsgi.application'
 
 
