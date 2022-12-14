@@ -3,154 +3,157 @@
 {% block content %}
 
 {% if display == "homeAccount" %}
-<section>
-    <h1>Profile</h1>
-    <section class="review">
-        <hr>
-        <h3>First Name: {{ userData.first_name }}</h3>
-        <h3>Last Name: {{ userData.last_name }}</h3>
-        <h3>Age: {{ userData.age }}</h3>
-        <h3>Email: {{ userData.email }}</h3>
-        <h3>Phone: {{ userData.phone }}</h3>
-        <hr>
+<section style="padding: 12px;">
+    <div style="padding: 12px;">
+        <h4>Profile</h4>
+    </div>
+    <section style="padding: 18px;">
+        <h5>First Name: {{ userData.first_name }}</h5>
+        <h5>Last Name: {{ userData.last_name }}</h5>
+        <h5>Age: {{ userData.age }}</h5>
+        <h5>Email: {{ userData.email }}</h5>
+        <h5>Phone: {{ userData.phone }}</h5>
     </section>
 
-
-    <h2>Favorite Albums</h2>
+    <div style="padding: 12px;">
+        <h4>Favorite Albums</h4>
+    </div>
     <section class="review">
-        <hr>
         {% for favorite in userFavorites %}
         <h3>{{favorite.album}}</h3>
-        <hr>
         {% endfor %}
-        <hr>
     </section>
-
-    <h2>Reviews You've Made</h2>
+    <div style="padding: 12px;">
+        <h4>Your Reviews</h4>
+    </div>
     <section class="review">
         <hr>
-        {% for review in userReviews %}
-        <img src="{{ review.album_image }}" alt="" style="width: 200px; height: 200px;">
-        <h3>{{review.album}}</h3>
-        <h3>{{review.stars}} Stars</h3>
-        <a class="" href="{% url 'deleteReview' review_id=review.id%}">Delete Review</a><br>
-        <a class="" href="{% url 'editReview' review_id=review.id%}">Edit Review</a>
-        <hr>
-        {% endfor %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 190px)); gap: 18px;">
+            {% for review in userReviews %}
+            <div class="album-card-with-delete-edit" style="max-width: 173px;">
+                <div>
+                    <img src="{{ review.album_image }}" style="width: 170px; height: 170px; border-radius: 3px;">
+                </div>
+                <div>
+                    <h4>{{ review.album.name }}</h4>
+                </div>
+                <div>
+                    <h4>{{ review.stars }} Stars</h4>
+                </div>
+                <div style="display: grid; grid-template-columns: 70px 70px; gap: 10px;">
+                    <a class="" href="{% url 'deleteReview' review_id=review.id%}">
+                        <div
+                            style="background-color: #efe2e2; min-height: 50px; border-radius: 6px; display: grid; place-items: center;">
+                            <h5 style="color: #813838">Delete</h5>
+                        </div>
+                    </a>
+                    <a class="" href="{% url 'editReview' review_id=review.id%}">
+                        <div
+                            style="background-color: #eeeeee; color: #000000; min-height: 50px; border-radius: 6px; display: grid; place-items: center;">
+                            <h5>Edit</h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
         <hr>
     </section>
     <section>
-        
+
         <div class="account-button">
             <a href="{% url 'profile' method='editUser'%}">
                 <h4>Edit Info</h4>
             </a>
         </div>
 
-    
+
         <div class="account-button">
             <a href="{% url 'profile' method='changeLoginInfo'%}">
                 <h4>Change Username/Password</h4>
             </a>
         </div>
-{% elif display == "editUser" %}
-    <section class="big-white-box">
-        <h3>Edit User Information</h3>
-        <form name="form" method="post" action="{%url 'profile' method='editUserForm'%}" style="padding: 40px 0 40px 0;">
-            {% csrf_token %}
-            
-            <label for="first_name">First name:</label>
-            <input
-            type="text"
-            name="first_name"
-            id="first_name"
-            value="{{userData.first_name}}"
-            autofocus
-            />
-            <br /><br />
-    
-            <label for="last_name">Last name:</label>
-            <input
-            type="text"
-            name="last_name"
-            id="last_name"
-            value="{{userData.last_name}}"
-            />
-            <br /><br />
-    
-            <label for="age">Age: </label>
-            <input type="text" name="age" id="age" value="{{userData.age}}" />
-            <br /><br />
-    
-            <label for="email">Email: </label>
-            <input type="text" name="email" id="email" value="{{userData.email}}" />
-            <br /><br />
-    
-            <label for="phone">Phone: </label>
-            <input type="text" name="phone" id="phone" value="{{userData.phone}}" />
-            <br /><br />
-            
-            <br><br>
-            <button type="submit" class="account-button" style="background-color: #ec995a; color: white; max-width: 280px; min-width: 280px; border: none;">Update</button>
-        </form>
-        
+        {% elif display == "editUser" %}
+        <section class="big-white-box">
+            <h3>Edit User Information</h3>
+            <form name="form" method="post" action="{%url 'profile' method='editUserForm'%}"
+                style="padding: 40px 0 40px 0;">
+                {% csrf_token %}
+
+                <label for="first_name">First name:</label>
+                <input type="text" name="first_name" id="first_name" value="{{userData.first_name}}" autofocus />
+                <br /><br />
+
+                <label for="last_name">Last name:</label>
+                <input type="text" name="last_name" id="last_name" value="{{userData.last_name}}" />
+                <br /><br />
+
+                <label for="age">Age: </label>
+                <input type="text" name="age" id="age" value="{{userData.age}}" />
+                <br /><br />
+
+                <label for="email">Email: </label>
+                <input type="text" name="email" id="email" value="{{userData.email}}" />
+                <br /><br />
+
+                <label for="phone">Phone: </label>
+                <input type="text" name="phone" id="phone" value="{{userData.phone}}" />
+                <br /><br />
+
+                <br><br>
+                <button type="submit" class="account-button"
+                    style="background-color: #ec995a; color: white; max-width: 280px; min-width: 280px; border: none;">Update</button>
+            </form>
+
             <div class="account-button" style="max-width: 280px;">
                 <a href="{% url 'profile' method='homeAccount'%}">
                     <h4>Cancel</h4>
                 </a>
             </div>
-    </section>
+        </section>
 
 
-    {% elif display == "editReview" %}
+        {% elif display == "editReview" %}
 
-    <img src="{{ review.album_image }}" alt="" style="width: 200px; height: 200px;">
-    <form method="POST" action="{%url 'editReview' review_id=review.id%}">
-        {% csrf_token %}
-        <div style="display: grid; grid-template-rows: auto auto auto auto auto; gap: 20px;">
-            <p>Stars out of 5</p>
-            <input class="rating-input-stars" type='number' name="stars" value = "{{review.stars}}">
+        <img src="{{ review.album_image }}" alt="" style="width: 200px; height: 200px;">
+        <form method="POST" action="{%url 'editReview' review_id=review.id%}">
+            {% csrf_token %}
+            <div style="display: grid; grid-template-rows: auto auto auto auto auto; gap: 20px;">
+                <p>Stars out of 5</p>
+                <input class="rating-input-stars" type='number' name="stars" value="{{review.stars}}">
 
-            <!-- <p>Review</p>
+                <!-- <p>Review</p>
             <input class="rating-input-text" type='text' name="name"> -->
-            <button type='submit' class="search-button" style="cursor: pointer;">
-                <h4>Update</h4>
-            </button>
-        </div>
-    </form>
+                <button type='submit' class="search-button" style="cursor: pointer;">
+                    <h4>Update</h4>
+                </button>
+            </div>
+        </form>
 
-    {% else %}
+        {% else %}
 
-    <section class="big-white-box">
-        <h3>Change username and password</h3>
-            <form name="form" method="post" action="{%url 'profile' method='editUandP'%}" style="padding: 40px 0 40px 0;">
+        <section class="big-white-box">
+            <h3>Change username and password</h3>
+            <form name="form" method="post" action="{%url 'profile' method='editUandP'%}"
+                style="padding: 40px 0 40px 0;">
                 {% csrf_token %}
 
                 <label for="username">User Name:</label>
-                <input
-                type="text"
-                name="username"
-                id="username"
-                value="{{userData.username}}"
-                />
+                <input type="text" name="username" id="username" value="{{userData.username}}" />
                 <br /><br />
-        
+
                 <label for="password">Password:</label>
-                <input
-                type="text"
-                name="password"
-                id="password"
-                value="{{userData.password}}"
-                />
+                <input type="text" name="password" id="password" value="{{userData.password}}" />
                 <br /><br />
-                <button type="submit" class="account-button" style="background-color: #ec995a; color: white; max-width: 280px; min-width: 280px; border: none;">Update</button>
+                <button type="submit" class="account-button"
+                    style="background-color: #ec995a; color: white; max-width: 280px; min-width: 280px; border: none;">Update</button>
             </form>
             <div class="account-button" style="max-width: 280px;">
                 <a href="{% url 'profile' method='homeAccount'%}">
                     <h4>Cancel</h4>
                 </a>
             </div>
-    </section>
-{% endif %}
+        </section>
+        {% endif %}
 
-{% endblock %}
+        {% endblock %}

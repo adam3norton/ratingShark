@@ -97,11 +97,7 @@ def newReviewPageView(request):
         return loginPageView(request, {'method': "signin"})
     else:
 
-        # if 'name' in request.GET:
-            # name = request.GET['name']
-            # response=requests.get(f'https://api.nal.usda.gov/fdc/v1/foods/search?query={name}&dataType=&pageSize=8&pageNumber=1&sortBy=dataType.keyword&sortOrder=desc&api_key={settings.API_KEY}')
-            # data = response.json()
-            # searchedFoods = data['foods']
+        reviewData = Review.objects.all()
         results = {}
         spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='3396d07feb1b47d2bfe027c51e261c82',
                                                                                     client_secret='7b684d65fe35451db6b21f4efeb2bd93'))
@@ -115,6 +111,7 @@ def newReviewPageView(request):
     context = {
         'results': results,
         'loggedin': loggedIn,
+        'reviews': reviewData,
         # 'uri': uri
     }
     return render(request,'homePages/new-review.html', context)

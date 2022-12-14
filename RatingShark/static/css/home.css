@@ -84,6 +84,14 @@ a {
     grid-template-rows: auto auto auto;
 }
 
+.album-card-with-delete-edit {
+    background-color: #f6f6f6;
+    border-radius: 10px;
+    padding: 10px;
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+}
+
 .rating-input-text {
     border-radius: 6px;
     border: none;
@@ -114,10 +122,11 @@ a {
 
 .search-button {
     border: none;
+    min-width: 80px;
     max-width: 80px;
     min-height: 40px;
     max-height: 60px;
-    border-radius: 6px;
+    border-radius: 20px;
     background-color: #000000;
     color: #ffffff;
 }
