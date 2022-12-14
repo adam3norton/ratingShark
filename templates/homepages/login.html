@@ -76,6 +76,11 @@
                         <button type="submit" class="login-submit-button">Sign Up</button>
                     </div>
                 </form>
+                <div style="display: grid; place-items: center;">
+                    <a href="{% url 'login' method='signin' %}">
+                        <button class="login-button">Already Have An Account? Sign in!</button>
+                    </a>
+                </div>
             </div>
         </div>
         <div></div>
@@ -108,6 +113,14 @@
                         </div>
                     </div>
                 </form>
+                <div style="display: grid; place-items: center;">
+                    <a href="{% url 'login' method='signup'%}">
+                        <button class="login-button" style="background-color: #ec995a; color: #ffffff;">
+                            Don't Have An Account? Sign Up!
+                        </button>
+                    </a>
+        
+                </div>
             </div>
         </div>
         <div></div>

@@ -21,7 +21,7 @@ class Track(models.Model):
         return (self.name)
     class Meta:
         db_table = "track"
-# make height ft and height inches
+
 class User(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -61,3 +61,11 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     stars = models.IntegerField(null=False, blank=False, default=0)
+    album_image = models.CharField(max_length=200, null=True)
+
+    class Meta:
+        db_table = "review"
+
+    def __str__(self) :
+        return_string = self.user.first_name + ': ' + self.album.name + ': ' + str(self.stars)
+        return (return_string)
