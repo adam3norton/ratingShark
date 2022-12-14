@@ -30,7 +30,7 @@ def indexPageView(request):
             'reviews' : reviewData,
             'loggedin': loggedIn,
         }
-        return render(request,'homePages/feed.html', context)
+        return render(request,'feed.html', context)
 
 def chartsPageView(request):
     if request.method == 'GET':
